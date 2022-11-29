@@ -1,34 +1,35 @@
 <?php
 
 require_once 'post.php';
-require_once 'user.php';
 require_once 'session.php';
 require_once 'userinfo.php';
 
 $session = new Session();
 $post = new Post();
-$user = new User();
+$isLogged = false;
 
 
-if(isset($_POST['email']) && isset($_POST['password'])) {
+if($post->get('email') != '' && $post->get('password')) {
     $email = $post->get('email');
     $password = $post->get('password');
 
     foreach($usersinfo as $info) {
         if($email == $info['email'] && $password == $info['password']){
-            $user->setName($info['name']);
-            $user->setCpf($info['cpf']);
-            $user->setEmail($info['email']);
-            $user->setPassword($info['password']);
+            $isLogged = true;
+            $session->set('email', $email);
+            $session->set('password', $password);
+            require_once 'view.php';
+            break;
         }
     }
 
-    if($email == $user->getEmail() && $password == $user->getPassword()) {
-        $_SESSION['user'] = $user->getEmail();
-        include 'view.php';
-    } else {
-        echo 'Login e/ou senha inválidos!';
+} else if ($session->getEmail('email') != '') {
+    foreach($usersinfo as $info){
+        if ($session->get('email') == $info['email'] && $session->get('password') == $info['password']){
+            $isLogged = true;
+            require_once 'view.php';
+            break;
+        }
     }
-} else {
-    echo 'Necessário preencher suas informações!';
-} 
+}
+if ($isLogged == false) echo '<p>Login inválido. <a href="index.html">Fazer Login</a>';

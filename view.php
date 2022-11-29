@@ -2,6 +2,7 @@
 require_once 'session.php';
 require_once 'post.php';
 require_once 'login.php';
+
 $session = new Session();
 $post = new Post();
 if($session->get('user') !== '') {
@@ -17,7 +18,7 @@ if($session->get('user') !== '') {
             <title>Conteúdo</title>
         </head>
         <body>
-            <p>Bem vindo, <?php echo $user ?></p>
+            <p>Bem vindo, <?php echo 'name' ?></p>
             <h1><?php echo $user->getName(); ?></h1>
             <p><?php echo $user->getCpf(); ?></p>
             <p>Você está convidado(a) a inserir o texto de sua escolha</p>
