@@ -23,7 +23,7 @@ if($post->get('email') != '' && $post->get('password')) {
         }
     }
 
-} else if ($session->getEmail('email') != '') {
+} else if ($session->get('email') != '') {
     foreach($usersinfo as $info){
         if ($session->get('email') == $info['email'] && $session->get('password') == $info['password']){
             $isLogged = true;
